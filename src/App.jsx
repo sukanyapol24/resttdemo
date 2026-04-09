@@ -109,6 +109,51 @@ styleEl.textContent = `
     background: linear-gradient(90deg, rgba(184,134,11,0.5), transparent);
   }
 
+  /* FAQ hover accordion */
+  .faq-item {
+    border-bottom: 1px solid rgba(184,134,11,0.18);
+    transition: background 0.3s ease;
+    cursor: default;
+    overflow: hidden;
+  }
+  .faq-item:first-child { border-top: 1px solid rgba(184,134,11,0.18); }
+  .faq-item:hover { background: rgba(184,134,11,0.04); }
+  .faq-answer {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease, padding 0.35s ease;
+    padding: 0 28px;
+  }
+  .faq-item:hover .faq-answer {
+    max-height: 300px;
+    opacity: 1;
+    padding: 0 28px 22px 28px;
+  }
+  .faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 28px;
+    transition: color 0.3s;
+  }
+  .faq-item:hover .faq-question { color: #B8860B; }
+  .faq-indicator {
+    width: 22px; height: 22px; flex-shrink: 0;
+    border: 1.5px solid rgba(184,134,11,0.4);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    transition: transform 0.4s ease, background 0.3s, border-color 0.3s;
+    color: #B8860B;
+  }
+  .faq-item:hover .faq-indicator {
+    background: #B8860B;
+    color: white;
+    border-color: #B8860B;
+    transform: rotate(45deg);
+  }
+
   /* Texture overlay */
   .paper-texture {
     background-image:
@@ -135,7 +180,7 @@ function DiyaParticles() {
 }
 
 /* ─── DATA ───────────────────────────────────────────────── */
-const NAV_LINKS = ["Home", "About", "Menu", "Gallery", "Contact"];
+const NAV_LINKS = ["Home", "About", "Menu", "Gallery", "Help", "Contact"];
 
 const DISHES = [
   { name: "Raan-e-Dhaba", desc: "Slow-roasted whole leg of lamb, midnight masala, saffron jus, charcoal-smoked achaar", tag: "Chef's Crown", img: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg?auto=compress&cs=tinysrgb&w=600" },
@@ -911,6 +956,154 @@ function Footer({ setActivePage }) {
   );
 }
 
+/* ─── HELP PAGE ──────────────────────────────────────────── */
+const FAQS = [
+  {
+    q: "Do you accept walk-in guests, or is a reservation required?",
+    a: "We warmly welcome walk-in guests, though we strongly recommend reservations — especially on weekends and festive evenings. Our Private Baithak rooms are reservation-only. Book via the Contact page or call us at +91 98765 43210.",
+  },
+  {
+    q: "Can you accommodate dietary restrictions and allergies?",
+    a: "Absolutely. Our kitchen is happy to customise dishes for vegetarian, vegan, Jain, and gluten-sensitive guests. Please inform us of any allergies when booking or upon arrival so our Ustad Ji can prepare accordingly with care.",
+  },
+  {
+    q: "What is included in the Royal Thali Experience?",
+    a: "The Royal Thali is a 12-course grand procession featuring seasonal curries, freshly made breads (tandoori, rumali, makke di roti), house-churned butter, chutneys, pickles, dal, rice, and a dessert selection. It is renewed monthly to honour seasonal ingredients.",
+  },
+  {
+    q: "Do you offer home delivery or takeaway?",
+    a: "We currently offer takeaway for select signature dishes. Home delivery is available within a 10 km radius of Shivamogga through our premium catering service. Please call us 24 hours in advance for catering orders to ensure freshness and quality.",
+  },
+  {
+    q: "How far in advance should I book for a private event or corporate dinner?",
+    a: "We recommend booking our Private Baithak rooms at least 7–14 days in advance for intimate gatherings, and 3–4 weeks ahead for large corporate events or weddings. Our events team will personally coordinate every detail — décor, menu, and ambience.",
+  },
+  {
+    q: "Is Desi Dhaba child-friendly?",
+    a: "Yes, families are the heart of our dhaba spirit. We offer a dedicated children's menu featuring milder flavours and smaller portions. Our dining hall is spacious and welcoming for families of all sizes. High chairs are available upon request.",
+  },
+  {
+    q: "What are your parking facilities?",
+    a: "We have dedicated valet parking available on all evenings from 6 PM onwards. Complimentary self-parking is also available in the adjacent lot on MG Road. Our team is happy to assist with directions — just call ahead.",
+  },
+  {
+    q: "Are your spices and ingredients authentically sourced?",
+    a: "Without compromise. We source whole spices directly from Guntur for chillies, Coorg for pepper, and Kerala for cardamom and turmeric — all ground fresh each morning in our kitchen. Our dairy comes from local farms, and our meats are hand-selected daily.",
+  },
+  {
+    q: "Do you host live music or cultural evenings?",
+    a: "Yes! Every Friday and Saturday evening we host live classical Indian music — ghazal singers, tabla players, and sitar artists — creating an immersive cultural experience. Special performances during Diwali, Eid, Holi, and other festivals are announced on our Instagram @desidhaba.shivamogga.",
+  },
+  {
+    q: "How can I provide feedback about my dining experience?",
+    a: "Your feedback is our greatest treasure. You may share your experience through our Contact page, speak directly with our floor manager, or write to us at hello@desidhaba.in. We personally read every message and use your thoughts to make each visit more extraordinary than the last.",
+  },
+];
+
+function Help() {
+  return (
+    <div className="section-light min-h-screen">
+
+      {/* ── HERO BANNER ── */}
+      <section className="relative flex items-center justify-center py-36 px-6 overflow-hidden" style={{ background: "#faf7f0" }}>
+        <div className="absolute inset-0 pointer-events-none">
+          <div style={{
+            position: "absolute", inset: 0,
+            background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(184,134,11,0.06) 0%, transparent 70%)"
+          }} />
+        </div>
+        <div className="absolute left-6 top-1/2 -translate-y-1/2 pointer-events-none select-none font-display text-[#B8860B] leading-none"
+          style={{ fontSize: 160, opacity: 0.03 }}>?</div>
+        <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none select-none font-display text-[#B8860B] leading-none"
+          style={{ fontSize: 120, opacity: 0.025 }}>सहायता</div>
+
+        <div className="relative text-center max-w-3xl mx-auto" style={{ animation: "fadeInUp 1s ease both" }}>
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="h-px w-14 bg-gradient-to-r from-transparent to-[#B8860B]/60" />
+            <Mandala size={32} opacity={0.7} />
+            <div className="h-px w-14 bg-gradient-to-l from-transparent to-[#B8860B]/60" />
+          </div>
+          <p className="font-serif text-[#B8860B] text-2xl tracking-[0.4em] italic mb-2">Kuch Sawaal?</p>
+          <p className="text-[#B8860B] text-[0.62rem] tracking-[0.4em] uppercase font-body font-semibold mb-4">
+            Help Centre · Frequently Asked Questions
+          </p>
+          <h1 className="font-display text-[#111111] leading-tight mb-5"
+            style={{ fontSize: "clamp(2.4rem,6vw,4rem)" }}>
+            We're Here to<br />
+            <em className="shimmer-gold font-normal" style={{ fontFamily: "inherit" }}>Help You</em>
+          </h1>
+          <p className="font-body text-[#555555] text-lg leading-relaxed max-w-xl mx-auto"
+            style={{ lineHeight: 1.85 }}>
+            Everything you need to know about dining, reservations, and the Desi Dhaba experience — hover over any question below to reveal its answer.
+          </p>
+        </div>
+      </section>
+
+      {/* ── FAQ SECTION ── */}
+      <section className="py-16 px-6 max-w-4xl mx-auto">
+        <div className="text-center mb-12">
+          <SectionLabel label="Common Questions" sub="Jawab Haazir Hai" />
+          <h2 className="font-display text-[#111111] mb-2 mt-2"
+            style={{ fontSize: "clamp(1.8rem,4vw,2.8rem)" }}>
+            Hover to Discover
+          </h2>
+          <GoldDivider />
+          <p className="font-body text-[#888888] text-sm mt-5 tracking-widest uppercase"
+            style={{ letterSpacing: "0.2em" }}>
+            — Place your cursor on a question to read the answer —
+          </p>
+        </div>
+
+        <div className="card-cream rounded-sm overflow-hidden">
+          {FAQS.map((faq, i) => (
+            <div key={i} className="faq-item">
+              <div className="faq-question">
+                <span className="font-display text-[#1a1a1a] text-lg md:text-xl pr-6" style={{ lineHeight: 1.4 }}>
+                  <span className="font-serif text-[#B8860B] mr-3 opacity-60" style={{ fontSize: "0.85rem" }}>
+                    {String(i + 1).padStart(2, "0")}.
+                  </span>
+                  {faq.q}
+                </span>
+                <div className="faq-indicator">+</div>
+              </div>
+              <div className="faq-answer">
+                <div className="flex gap-4">
+                  <div className="w-px bg-gradient-to-b from-[#B8860B] to-transparent flex-shrink-0 mt-1" style={{ minHeight: 40 }} />
+                  <p className="font-body text-[#555555] text-base leading-relaxed" style={{ lineHeight: 1.85 }}>
+                    {faq.a}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Still need help CTA */}
+        <div className="mt-16 text-center py-14 px-8 section-cream border border-[#B8860B]/15 rounded-sm paper-texture relative overflow-hidden">
+          <div className="absolute top-4 right-4 opacity-10"><Mandala size={60} opacity={1} /></div>
+          <div className="absolute bottom-4 left-4 opacity-10"><Mandala size={40} opacity={1} /></div>
+          <p className="font-serif text-[#B8860B] text-2xl italic tracking-widest mb-2">Still have questions?</p>
+          <h3 className="font-display text-[#111111] text-3xl mb-4">Reach Out to Us</h3>
+          <GoldDivider />
+          <p className="font-body text-[#666666] text-base mt-5 mb-8 max-w-md mx-auto" style={{ lineHeight: 1.85 }}>
+            Our team is delighted to assist you. Write to us, call us, or simply walk through our doors — a warm welcome always awaits.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="mailto:hello@desidhaba.in"
+              className="px-8 py-3.5 bg-[#B8860B] text-white font-body text-[0.65rem] tracking-[0.3em] uppercase font-bold hover:bg-[#9a700a] transition-all duration-300 shadow-md rounded-sm inline-block">
+              Email Us
+            </a>
+            <a href="tel:+919876543210"
+              className="px-8 py-3.5 border border-[#1a1a1a] text-[#1a1a1a] font-body text-[0.65rem] tracking-[0.3em] uppercase font-bold hover:bg-[#1a1a1a] hover:text-white transition-all duration-300 rounded-sm inline-block">
+              Call Us
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 /* ─── APP ROOT ───────────────────────────────────────────── */
 export default function App() {
   const [activePage, setActivePage] = useState("Home");
@@ -920,7 +1113,7 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const PAGE = { Home, About, Menu, Gallery, Contact };
+  const PAGE = { Home, About, Menu, Gallery, Help, Contact };
   const PageComponent = PAGE[activePage];
 
   return (
